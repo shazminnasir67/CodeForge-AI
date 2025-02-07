@@ -1,0 +1,39 @@
+# Python
+*.pyc
+__pycache__/
+*.pyo
+*.pyd
+*.env
+venv/
+env/
+myenv/
+
+instance/
+.venv/
+.pytest_cache/
+.coverage
+htmlcov/
+
+# FastAPI/Uvicorn Logs
+logs/
+*.log
+
+# Jupyter Notebooks 
+.ipynb_checkpoints/
+
+# Operating System Files
+.DS_Store
+Thumbs.db
+
+# Static and media files generated during development
+staticfiles/
+media/
+
+# IDE Specific Files
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Docker
+docker-compose.override.yml

@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Code Editor</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/theme/darcula.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        :root {
+            --primary-color: #007BFF;
+            --secondary-color: #836FFF;
+            --light-color: #F0F3FF;
+            --dark-color: #211951;
+            --accent-color: #15F5BA;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Open Sans', sans-serif;
+            background-color: var(--light-color);
+            color: var(--dark-color);
+
+        }
+
+        /* Container */
+        .container {
+            width: 90%;
+            margin: 0 auto;
+            max-width: 1200px;
+        }
+
+        /* Header */
+        .header {
+            background: #F0F3FF;
+            padding: 0.5rem 0;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.15);
+            position: sticky;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+            transition: background-color 0.3s ease;
+        }
+
+        .header.scrolled {
+            background-color: rgba(187, 225, 250, 0.205);
+        }
+
+        .header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--dark-color);
+        }
+
+        .nav-links ul {
+            display: flex;
+            list-style: none;
+            align-items: center;
+        }
+
+        .nav-links ul li {
+            margin-left: 30px;
+        }
+
+        .nav-links ul li a {
+            color: var(--dark-color);
+            font-weight: 400;
+            font-size: 1.1rem;
+            transition: color 0.3s;
+        }
+
+        .nav-links ul li a:hover {
+            color: var(--primary-color);
+        }
+
+        .button {
+            display: inline-block;
+            padding: 12px 24px;
+            background: var(--secondary-color);
+            color: white;
+            font-weight: 600;
+            border-radius: 28px;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            border: none;
+        }
+
+        .button:hover {
+            background: var(--accent-color);
+            /* Darker shade for hover */
+            transform: scale(1.02);
+        }
+
+        .editor-container {
+            max-width: 1000px;
+            margin: 30px auto;
+            padding: 10px;
+            border: 1px solid var(--primary-color);
+            border-radius: 8px;
+
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            background-color: var(--light-color);
+            /* width: 90%; */
+        }
+
+        .editor {
+            /* border: 2px dashed var(--primary-color); */
+            border-radius: 8px;
+            padding: 10px;
+            text-align: center;
+            min-height: 350px;
+            position: relative;
+            overflow: auto;
+            text-align: left;
+        }
+
+        .theme-toggle {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 10px;
+        }
+
+        .theme-toggle label {
+            cursor: pointer;
+            margin-left: 20px;
+        }
+
+        .drop-area {
+            border: 2px dashed #15F5BA;
+            background-color: #c3cfffb7;
+            padding: 40px;
+            border-radius: 8px;
+            position: absolute;
+            z-index: 9999;
+            height: 50%;
+            width: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            justify-content: center;
+            text-align: center;
+            transition: background-color 0.3s;
+        }
+
+        .drop-area p {
+            margin: 16px;
+        }
+
+        #file-upload {
+            margin-top: 10px;
+        }
+
+        .drop-area.drag-over {
+            background-color: var(--secondary-color);
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: var(--accent-color);
+            border: none;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+            padding: 5px 10px;
+            transition: background-color 0.3s;
+        }
+
+        .close-btn:hover {
+            background: var(--primary-color);
+        }
+
+        body.dark {
+            background-color: var(--dark-color);
+            color: var(--light-color);
+        }
+
+        body.dark header {
+            background-color: var(--dark-color);
+        }
+
+        body.dark .editor-container {
+            background-color: var(--dark-color);
+            border: 1px solid var(--accent-color);
+        }
+
+        body.dark .editor {
+            border-color: var(--accent-color);
+            background-color: #333;
+            color: var(--light-color);
+        }
+
+
+
+        body.dark .action-buttons button {
+            background-color: var(--primary-color);
+        }
+
+        #result-container {
+            margin-top: 20px;
+            padding: 30px;
+            border: 1px solid var(--primary-color);
+            border-radius: 8px;
+            background-color: #ffffff;
+            overflow: auto;
+            margin-bottom: 20px;
+        }
+
+        pre {
+            background-color: #f5f5f5;
+            /* Change this to your desired color */
+            padding: 10px;
+            margin-top: 15px;
+            border-radius: 5px;
+            overflow: auto;
+        }
+
+        ol {
+            margin-left: 20px;
+            /* Indent ordered lists */
+        }
+
+        .loading-dots {
+            display: none;
+            text-align: center;
+            font-size: 30px;
+            /* Increased size */
+            color: var(--primary-color);
+        }
+
+        .loading-message {
+            display: none;
+            text-align: center;
+            font-size: 18px;
+            margin-top: 10px;
+            /* Space above message */
+        }
+
+        .loading-dots span {
+            animation: wave 1s infinite;
+        }
+
+        .loading-dots span:nth-child(1) {
+            animation-delay: 0s;
+        }
+
+        .loading-dots span:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .loading-dots span:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes wave {
+
+            0%,
+            60%,
+            100% {
+                transform: initial;
+            }
+
+            30% {
+                transform: translateY(-10px);
+            }
+        }
+
+        .action-buttons button.active {
+            background-color: var(--accent-color);
+        }
+
+        .action-buttons {
+            position: absolute;
+            top: 180px;
+            right: 60px;
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        .action-buttons button {
+            background-color: var(--secondary-color);
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            /* Fixed width for icon-only state */
+            overflow: hidden;
+            transition: width 0.3s ease, background-color 0.3s ease;
+        }
+
+        .action-buttons button:hover {
+            width: 150px;
+            /* Expanded width on hover */
+            background-color: var(--accent-color);
+        }
+
+        .action-buttons button i {
+            margin-right: 8px;
+            /* Space between icon and text */
+        }
+
+        .action-buttons button span {
+            display: none;
+            /* Hide text by default */
+            white-space: nowrap;
+            /* Prevent text from wrapping */
+        }
+
+        .action-buttons button:hover span {
+            display: inline;
+            /* Show text on hover */
+        }
+
+        .action-buttons button:disabled {
+            background-color: grey;
+            cursor: not-allowed;
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/javascript/javascript.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/python/python.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/clike/clike.min.js"></script>
+    <!-- Java mode -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+</head>
+
+<body>
+    <header class="header">
+        <div class="container">
+            <a href="#" class="logo">CodeGuard AI</a>
+            <nav class="nav-links">
+                <ul>
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">Features</a></li>
+                    <li><a href="#">Documentation</a></li>
+                    <li><a href="#" class="button">Login/Sign Up</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div class="editor-container">
+        <div class="theme-toggle">
+            <label for="theme-switch">Toggle Dark/Light Theme</label>
+            <input type="checkbox" id="theme-switch">
+        </div>
+
+        <div class="editor" id="editor">
+            <div class="drop-area" id="drop-area">
+                <label class="upload-btn" for="file-upload">Drop or choose a file</label>
+                <input type="file" id="file-upload">
+                <button id="upload-button">Upload</button>
+                <p>or paste your code here</p>
+            </div>
+
+            <textarea id="code" style="display: none;"></textarea>
+
+        </div>
+        <div class="action-buttons">
+            <button id="static-analysis">
+                <i class="fas fa-chart-bar"></i>
+                <span>Static Analysis</span>
+            </button>
+            <button id="bug-detection">
+                <i class="fas fa-bug"></i>
+                <span>Bug Detection</span>
+            </button>
+            <button id="code-completion">
+                <i class="fas fa-code"></i>
+                <span>Code Completion</span>
+            </button>
+            <button id="test-case-generation">
+                <i class="fas fa-vial"></i>
+                <span>Test Case Generation</span>
+            </button>
+        </div>
+
+        <div id="result-container">
+            <div class="loading-dots" id="loading-dots">
+                <span>.</span><span>.</span><span>.</span>
+            </div>
+            <div class="loading-message" id="loading-message">Loading, please wait...</div>
+            <button id="download-report" style="display: none; margin-top: 20px;">Download Report</button>
+        </div>
+
+    </div>
+
+    
+
+<script>
+    document.addEventListener('DOMContentLoaded', async () => {
+
+
+        // Element References
+
+        const themeSwitch = document.getElementById('theme-switch');
+        const body = document.body;
+        const fileUpload = document.getElementById('file-upload');
+        const uploadButton = document.getElementById('upload-button');
+        const loadingDots = document.getElementById('loading-dots');
+        const dropArea = document.getElementById('drop-area');
+        const closeDropAreaButton = document.getElementById('close-drop-area');
+        const codeTextArea = document.getElementById('code');
+        const editor = CodeMirror.fromTextArea(codeTextArea, {
+            mode: 'javascript',
+            lineNumbers: true,
+            theme: 'default',
+            indentUnit: 4,
+            tabSize: 4,
+            indentWithTabs: true
+        });
+
+        const allowedFormats = /\.(java|js|cpp|py|c|cs|go|bash|html|css|csv|scala|ruby|r|sql|asm|jsx|png|jpg|jpeg|pdf|docx|txt)$/i;
+        editor.on('focus', () => {
+            toggleDropArea(false);
+        });
+        editor.on('mousedown', () => {
+            toggleDropArea(false);
+        });
+        // Theme Toggle
+        themeSwitch.addEventListener('change', () => {
+            body.classList.toggle('dark');
+            editor.setOption("theme", body.classList.contains('dark') ? 'darcula' : 'default');
+        });
+
+
+
+        function handleFile(file) {
+            if (!allowedFormats.test(file.name)) {
+                alert('Unsupported file format');
+                return;
+            }
+
+            const reader = new FileReader();
+            if (file.type.startsWith('image/')) {
+                displayImage(file);
+                reader.onload = () => sendToOCR(reader.result);  // Using base64
+                reader.readAsDataURL(file);  // Read as Data URL for images
+            } else if (file.type === 'application/pdf') {
+                // For PDF files
+                reader.onload = async () => {
+                    const formData = new FormData();
+                    formData.append('file', file);
+
+                    const response = await fetch('/api/process-pdf', {
+                        method: 'POST',
+                        body: formData
+                    });
+
+                    const data = await response.json();
+                    editor.setValue(data.result || 'No result from PDF.');
+                    toggleDropArea(false);
+                };
+                reader.readAsArrayBuffer(file);  // Read as ArrayBuffer for PDF
+            }
+            else {
+                reader.onload = () => {
+                    editor.setValue(reader.result);
+                    toggleDropArea(false);
+                };
+                reader.readAsText(file);  // Read as text for non-image files
+            }
+        }
+
+        function sendToOCR(imageData) {
+            // No need to use JSON.stringify since we're already using Data URL
+            fetch('/api/process-image', {
+                method: 'POST',
+                body: JSON.stringify({ image: imageData }),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+                .then(response => response.json())
+                .then(data => {
+                    editor.setValue(data.result || 'No result from model.');
+                    loadingDots.style.display = 'none';
+                    toggleDropArea(false);
+                })
+                .catch(error => {
+                    editor.setValue("An error occurred during OCR processing: " + error.message);
+                    loadingDots.style.display = 'none';
+                });
+        }
+
+
+        function displayImage(file) {
+            const img = document.createElement('img');
+            toggleDropArea(false)
+            img.src = URL.createObjectURL(file);
+            img.style.maxWidth = '50%';
+            dropArea.innerHTML = '';
+            dropArea.appendChild(img);
+            loadingDots.style.display = 'block';
+        }
+
+
+
+
+        function toggleDropArea(show) {
+            dropArea.style.display = show ? 'block' : 'none';
+        }
+
+        // Event Listeners for Drag & Drop
+        dropArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropArea.classList.add('drag-over');
+        });
+
+        dropArea.addEventListener('dragleave', () => dropArea.classList.remove('drag-over'));
+
+        dropArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            const file = e.dataTransfer.files[0];
+            handleFile(file);
+        });
+
+        // File Upload Event Listeners
+        fileUpload.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            handleFile(file);
+        });
+
+        uploadButton.addEventListener('click', () => {
+            const file = fileUpload.files[0];
+            if (file) handleFile(file);
+        });
+
+
+        // API Call for Code Actions
+        async function fetchResult(endpoint) {
+            const code = editor.getValue();
+            disableActionButtons(true);
+            loadingDots.style.display = 'block';
+            document.getElementById('loading-message').style.display = 'block';
+            try {
+                const response = await fetch(endpoint, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ code })
+                });
+
+                const data = await response.json();
+                displayResult(data.message);
+            } catch (error) {
+                displayResult("An error occurred: " + error.message);
+            } finally {
+                // Re-enable action buttons and hide loading indicator
+                disableActionButtons(false);
+                loadingDots.style.display = 'none';
+                document.getElementById('loading-message').style.display = 'none'; // Hide loading message
+            }
+        }
+
+
+        // Format and Display Results
+        function formatNonCodeSections(message) {
+            let formatted = message
+                .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>") // Bold
+                .replace(/^## (.*?)$/gm, "<h2>$1</h2>") // H2
+                .replace(/^### (.*?)$/gm, "<h3>$1</h3>") // H3
+                .replace(/^#### (.*?)$/gm, "<h4>$1</h4>"); // H4
+
+            formatted = formatted.replace(/(^|\n)\* (.*?)(\n|$)/g, "$1<li style='margin-left: 24px;'>$2</li>");
+            formatted = formatted.replace(/(<li>.*<\/li>)+/g, "<ul>$&</ul>");
+            formatted = formatted.replace(/(<p>.*?<\/p>)(<br>)+/g, "$1<br><br>");
+            formatted = formatted.replace(/\n(?!<\/?(ul|ol|li)>)/g, "<br>");
+            return formatted;
+        }
+
+        function displayResult(message) {
+            const codeBlockRegex = /```([\s\S]*?)```/g;
+            let formattedMessage = '';
+            let lastIndex = 0;
+            let match;
+
+            while ((match = codeBlockRegex.exec(message)) !== null) {
+                const textBeforeCode = message.substring(lastIndex, match.index);
+                if (textBeforeCode) {
+                    formattedMessage += formatNonCodeSections(textBeforeCode);
+                }
+
+                const codeContent = match[1].trim();
+                formattedMessage += `<pre><code>${codeContent}</code></pre>`;
+
+                lastIndex = codeBlockRegex.lastIndex;
+            }
+
+            const textAfterCode = message.substring(lastIndex);
+            if (textAfterCode) {
+                formattedMessage += formatNonCodeSections(textAfterCode);
+            }
+
+            document.getElementById("result-container").innerHTML = formattedMessage;
+            const downloadButton = document.getElementById('download-report');
+            downloadButton.style.display = 'block';
+
+            // Add event listener to the download button
+            downloadButton.addEventListener('click', () => {
+                downloadReport(message);
+            });
+        }
+
+        // Action Buttons
+        document.querySelectorAll(".action-buttons button").forEach(button => {
+            button.addEventListener("click", () => {
+                console.log(`Button ${button.id} clicked`); // Debugging line
+                activateButton(button);
+                const endpointMap = {
+                    "static-analysis": "/api/static-analysis",
+                    "bug-detection": "/api/bug-detection",
+                    "code-completion": "/api/code-completion",
+                    "test-case-generation": "/api/test-case-generation"
+                };
+                const endpoint = endpointMap[button.id];
+                if (endpoint) {
+                    fetchResult(endpoint);
+                } else {
+                    console.log(`No endpoint found for ${button.id}`); // Debugging line
+                }
+            });
+        });
+        function disableActionButtons(disable) {
+            const buttons = document.querySelectorAll('.action-buttons button');
+            buttons.forEach(button => {
+                button.disabled = disable;
+            });
+        }
+
+
+        function activateButton(button) {
+            button.classList.add('active');
+            button.disabled = true;
+            button.style.backgroundColor = '#211951';
+
+        }
+    });
+</script>
+
+</body>
+
+</html>

@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Code Analysis Tool</title>
+    <link rel="stylesheet" href="/static/css/editorstyle.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.5.0/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="/static/css/prism.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="logo">CodeGuard AI</div>
+            <div class="chat-list">
+                <h4>Recent Chats</h4>
+                <ul id="chat-history-list">
+                </ul>
+            </div>
+            <nav>
+                <h4>Settings</h4>
+                <ul>
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">Features</a></li>
+                    <li><a href="#">Documentation</a></li>
+                    <li><a href="#" id="logout-button" class="button">Logout</a></li>
+                </ul>
+            </nav>
+
+            <div class="user-profile">
+                <!-- <div class="user">
+                    <img src="user.jpg" alt="Profile Picture">
+                    <span>John Doe</span>
+                </div> -->
+                <button class="upgrade-btn">Open Editor</button>
+            </div>
+        </aside>
+
+        <main class="chat-area">
+            <div class="messages-container" id="messages">
+                <h1 id="welcome-heading">Secure Your Code</h1>
+                <p>Improve your code quality, automate testing, and detect bugs with CodeGuard AI. Let's get started!
+                </p>
+            </div>
+            <div id="voice-input-area" class="voice-input-area" style="display: none;">
+                <p>Listening...</p>
+                <div class="wave-container">
+                    <div class="wave"></div>
+                    <div class="wave"></div>
+                    <div class="wave"></div>
+                    <div class="wave"></div>
+                    <div class="wave"></div>
+                </div>
+            </div>
+
+            <!-- Features Section -->
+            <div class="features-section">
+                <div class="stroke">
+                    <div class="feature-box">
+                        <i class="fas fa-shield-alt"></i>
+                        <h3>Static Analysis</h3>
+                        <p>Analyze your code for potential vulnerabilities.</p>
+                        <p class="prompt">Try: <strong>"Analyze my Python code for security issues"</strong></p>
+
+                    </div>
+                </div>
+                <div class="stroke">
+                    <div class="feature-box">
+                        <i class="fas fa-bug"></i>
+                        <h3>Bug Detection</h3>
+                        <p>Identify and resolve bugs efficiently with AI.</p>
+                        <p class="prompt">Try: <strong>"Identify bugs in my React app"</strong></p>
+
+                    </div>
+                </div>
+                <div class="stroke">
+                    <div class="feature-box">
+                        <i class="fas fa-clipboard-check"></i>
+                        <h3>Test Cases</h3>
+                        <p>Generate automated test cases for your code.</p>
+                        <p class="prompt">Try: <strong>"Generate test cases for this Python function"</strong></p>
+
+                    </div>
+                </div>
+            </div>
+
+            <div id="file-container"></div>
+            <!-- <div id="file-name-box" class="file-name-box" style="display: none;">
+                <span id="file-name" class="file-name"></span>
+                <span id="file-remove" class="file-remove" onclick="removeFile()">&#10005;</span>
+            </div> -->
+
+            <!-- Chat Input Section -->
+            <div class="chat-input-section">
+                <button id="mic-button" class="voice-button">
+                    <i class="fas fa-microphone"></i>
+                </button>
+          
+                <label class="file-upload">
+                    <i class="fas fa-paperclip"></i>
+                    <input type="file" class="file-input" id="input-file" onchange="handleFileSelection()">
+                </label>
+                <input type="text" class="chat-input" id="chat-input" placeholder="Type your message here..."
+                    onfocus="handleInputFocus()">
+                <button class="send-button" onclick="sendMessage()">
+                    <i class="fas fa-arrow-circle-right"></i>
+                </button>
+            </div>
+        </main>
+    </div>
+
+    <script src="/static/javascript/prism.js"></script>
+    <script src="/static/javascript/app.js"></script>
+    <script>
+
+    sessionId = "";  // Variable to store current session ID
+
+        // Load conversation history
+        async function loadHistory() {
+            try {
+                const userId = "user123";  // Static user ID for demo, can be dynamic
+                const response = await fetch(`/api/history/${userId}`);
+                const data = await response.json();
+
+                if (data.history) {
+                    const historyList = document.getElementById("chat-history-list");
+                    historyList.innerHTML = "";  // Clear the list
+
+                    data.history.forEach(entry => {
+                        const listItem = document.createElement("li");
+                        listItem.textContent = new Date(entry.timestamp).toLocaleString();  // Display time of conversation
+                        listItem.onclick = () => loadChatHistory(entry.session_id);
+                        historyList.appendChild(listItem);
+                    });
+                }
+            } catch (error) {
+                console.error("Error loading history:", error);
+            }
+        }
+</script>
+
+
+</body>
+</html>

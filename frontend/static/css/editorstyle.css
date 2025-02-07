@@ -1,0 +1,512 @@
+:root {
+    --primary-color: #007BFF;
+    --secondary-color: #836FFF;
+    --light-color: #F0F3FF;
+    --dark-color: #211951;
+    --accent-color: #15F5BA;
+}
+
+/* General reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', sans-serif;
+}
+
+body {
+    height: 100vh;
+    background: var(--dark-color);
+}
+
+.container {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+/* Sidebar */
+.sidebar {
+    width: 18%;
+    background: #15152e;
+    color: var(--light-color);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.sidebar .logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 30px;
+    font-family: monospace;
+    background-color: #29294E;
+    padding: 12px 10px;
+    border-radius: 8px;
+}
+
+.sidebar nav ul {
+    list-style: none;
+}
+
+.sidebar nav ul li {
+    margin: 15px 0;
+    font-size: 1rem;
+}
+
+.sidebar nav ul li a {
+    text-decoration: none;
+    color: #bbb;
+    transition: color 0.3s;
+}
+
+.sidebar nav ul li a:hover {
+    color: var(--accent-color);
+}
+
+.sidebar .chat-list h4 {
+    margin-top: 10px;
+    margin-bottom: 20px;
+    color: var(--light-color);
+    font-family:system-ui;
+}
+
+.sidebar .chat-list ul {
+    list-style: none;
+}
+
+.sidebar .chat-list ul li {
+    margin: 10px 0;
+    font-size: 1rem;
+    color: #bbb;
+    
+}
+.sidebar nav h4 {
+    margin-top: 10px;
+    margin-bottom: 20px;
+    color: var(--light-color);
+    font-family:system-ui;
+}
+
+.sidebar .user-profile {
+    text-align: center;
+}
+
+.sidebar .user-profile .user {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.sidebar .user-profile .user img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.upgrade-btn {
+    background-color: var(--accent-color);
+    border: none;
+    color: var(--dark-color);
+    padding: 10px 20px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+/* Chat Area */
+.chat-area {
+    width: 86%;
+    background: #1D1D3F;
+    color: var(--light-color);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
+
+
+
+.messages-container h1 {
+    font-size: 2rem;
+    background: linear-gradient(90deg, var(--secondary-color), var(--accent-color), #BBE1FA);
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-align: center;
+    /* color: #bbb; */
+}
+
+.messages-container p {
+    margin-top: 10px;
+    font-size: 0.8rem;
+    color: #bbb;
+    text-align: center;
+}
+
+/* Features Section */
+.feature-box {
+    
+    display: inline-block;
+    margin: 0px;
+    border-radius: 8px; /* Use a consistent border-radius */
+    background-color: #29294E;
+    padding: 16px 12px;
+    width: 100%;
+    text-align: center;
+    color: var(--light-color);    
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s;
+    
+}
+.stroke{
+  width: 25%;
+  position: relative;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(140deg, var(--accent-color), #29294E,#29294E);
+  padding: 1px;
+  border-radius: 8px;
+}
+
+
+
+.features-section {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    gap: 14px;
+    position: absolute;
+    top: 50%;  /* Start at the middle of the container */
+    transform: translateY(-50%);  /* Adjust position by 50% to truly center */
+    
+}
+
+
+.feature-box i {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+}
+
+.feature-box h3 {
+    margin-bottom: 10px;
+    font-weight: 500;
+}
+
+.feature-box p {
+    font-size: 0.8rem;
+      color: #BBBBBB;
+}
+.prompt {
+    padding: 8px; /* Add padding */
+    background-color: #3b3b5db7; /* Lighter background color */
+    border-radius: 5px; /* Optional: add border-radius for rounded corners */
+    margin-top: 10px;
+
+}
+
+/* Chat Input Section */
+.chat-input-section {
+    display: flex;
+    align-items: center;
+    background: #15152e;
+    border-radius: 40px;
+    margin-top: 5px;
+    padding: 5px 15px;
+    width: 90%;
+}
+
+
+.file-upload {
+    margin-right: 10px;
+    margin-left: 10px;
+    color: var(--light-color);
+    cursor: pointer;
+}
+
+.file-upload input {
+    display: none;
+}
+
+.chat-input {
+    flex-grow: 1; /* Allow to take available space */
+    background: transparent; /* Transparent background */
+    border: none; /* No border */
+    color: var(--light-color); /* Text color */
+    font-size: 1rem; /* Font size */
+    padding: 10px; /* Padding inside the input */
+    outline: none; /* Remove outline */
+    resize: none; /* Disable resizing */
+    overflow: auto; /* Allow scrolling */
+    max-height: 100px; /* Max height to avoid overflow */
+}
+
+
+.send-button {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+.send-button:hover {
+    color: var(--secondary-color);
+}
+.send-button i {
+    font-size: 2rem;
+    color: var(--light-color);
+}
+
+/* .file-display {
+    max-height: 60px; 
+    opacity: 1; 
+    overflow: hidden; 
+    transition: max-height 0.3s ease, opacity 0.3s ease;
+    display: flex; 
+    align-items: center;
+    margin-bottom: 10px; 
+}
+.file-name {
+    color: var(--light-color);
+    font-size: 0.9rem;
+    width: 60px; 
+    overflow: hidden; 
+    white-space: nowrap; 
+    text-overflow: ellipsis; 
+}
+.file-remove {
+    color: #bbd1f7;
+    font-size: 1rem;
+    cursor: pointer;
+} 
+ .file-container {
+    display: flex; 
+    align-items: center; 
+} */
+.messages-container {
+    display: flex;
+    flex-direction: column;/* Align user messages to the right */
+    margin-bottom: 10px; /* Space for input section */
+    height: 500px;
+    margin-top: 10px;
+    width: 100%;
+    padding: 0 60px;
+    overflow-y: auto;
+    position: relative;
+}
+.messages-container::-webkit-scrollbar {
+    width: 0; /* Remove scrollbar space */
+    background: transparent; /* Optional: transparent background */
+}
+
+/* Hide scrollbar for Firefox */
+.messages-container {
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* Internet Explorer and Edge */
+}
+/* General message styling */
+.message {
+    padding: 15px 18px; /* Increased padding */
+    border-radius: 10px;
+    max-width: 600px;
+    display: flex;
+    flex-direction: column; /* Stack elements vertically */
+    align-items: stretch; /* Stretch to full width */
+    margin-bottom: 20px; /* Space for input section */
+    transition: max-height 0.3s ease; /* Add transition for smooth effect */
+}
+/* User message style */
+.user-message {
+    background-color: var(--accent-color);
+    color: white;
+    align-self: flex-end; /* Align user messages to the right */
+    text-align: right; /* Ensure text aligns to the right */
+}
+
+/* AI message style */
+.ai-message {
+    background-color: var(--dark-color);
+    color: white;
+    max-width: 100%;
+    align-self: flex-start; /* Align AI messages to the left */
+    text-align: left; /* Ensure text aligns to the left */
+}
+
+
+
+pre {
+    background-color: #2b2b2b; /* ChatGPT-like background color */
+    padding: 10px;
+    border-radius: 4px;
+    overflow: auto;
+    scrollbar-width: thin; /* Aesthetic scrollbar */
+    font-size: 14px;
+}
+
+code {
+    font-family: 'Courier New', Courier, monospace;
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+
+.explanation-container p {
+    margin-bottom: 10px;
+    color: #bbd1f7;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.explanation-container li {
+    margin-left: 20px;
+    list-style-type: disc;
+}
+
+.explanation-container {
+    margin-bottom: 15px;
+}
+
+/* File name box styling */
+.file-name-box {
+    display: inline-block;
+    max-width: 200px; /* Set max width */
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    padding: 5px;
+    border: 1px solid #ccc;
+    margin: 10px;
+    border-radius: 8px;
+    position: relative;
+    font-size: 12px;
+    transition: box-shadow 0.2s ease; /* Smooth transition for shadow effect */
+}
+
+/* Add light shadow effect on hover */
+.file-name-box:hover {
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Light shadow */
+}
+
+/* File icon styling */
+.file-icon {
+    display: inline-block;
+    font-size: 16px; /* Adjust icon size */
+    margin-right: 8px; /* Space between icon and file name */
+}
+
+/* File name styling */
+.file-name {
+    display: inline-block;
+    max-width: calc(100% - 30px); /* Leave space for icon and cross */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding-right: 20px; /* Space between file name and cross */
+}
+
+/* Remove cross button styling */
+.file-remove {
+    position: absolute;
+    right: 5px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: red;
+    font-size: 16px;
+    padding-left: 10px; /* Space between file name and cross */
+    transition: color 0.2s ease; /* Smooth transition for cross color */
+}
+
+/* Change color of cross on hover */
+.file-remove:hover {
+    color: darkred;
+}
+
+
+
+
+/* Style the chat input area */
+.chat-input-section {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+
+
+.voice-input-area {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    background-color: #282c34;
+    color: white;
+    font-size: 1.5rem;
+    text-align: center;
+}
+
+/* Wave animation container */
+.wave-container {
+    display: flex;
+    gap: 5px;
+    margin-top: 20px;
+}
+
+.wave {
+    width: 5px;
+    height: 20px;
+    background-color: white;
+    animation: wave 1s infinite ease-in-out;
+    border-radius: 2px;
+}
+
+/* Different animation delays for the waves */
+.wave:nth-child(1) {
+    animation-delay: 0s;
+}
+.wave:nth-child(2) {
+    animation-delay: 0.2s;
+}
+.wave:nth-child(3) {
+    animation-delay: 0.4s;
+}
+.wave:nth-child(4) {
+    animation-delay: 0.6s;
+}
+.wave:nth-child(5) {
+    animation-delay: 0.8s;
+}
+
+/* Wave animation */
+@keyframes wave {
+    0%, 100% {
+        height: 20px;
+    }
+    50% {
+        height: 40px;
+    }
+}
+
+/* Microphone button */
+.voice-button {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    padding: 0;
+    cursor: pointer;
+}
+
+.voice-button i {
+    background: none;
+    color: rgb(246, 244, 244);
+    font-size: 1rem;
+    margin-bottom: 5px;
+    padding-bottom: 5px;
+}
+
+
+

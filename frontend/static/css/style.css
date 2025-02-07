@@ -1,0 +1,712 @@
+/* Global Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Open Sans', sans-serif; /* Clean font */
+    background-color: #F0F4F8; /* Light grayish-blue background */
+    color: #2C3E50; /* Darker text color for readability */
+    line-height: 1.6; /* Adjusted for better readability */
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+:root {
+    --primary-color: #007BFF; /* Bright blue */
+    --secondary-color: #836FFF; 
+    --light-color: #F0F3FF; 
+    --dark-color: #211951; 
+    --accent-color: #15F5BA;
+}
+
+/* Container */
+.container {
+    width: 90%; 
+    margin: 0 auto;
+    max-width: 1200px;
+}
+
+/* Header */
+.header {
+    background: #F0F3FF; 
+    padding: 0.5rem 0; 
+    box-shadow: 0 2px 20px rgba(0, 0, 0, 0.15);
+    position: sticky; /* Sticky header */
+    top: 0; 
+    width: 100%;
+    z-index: 1000; /* Ensure it's above other content */
+    backdrop-filter: blur(10px); /* Apply blur to background */
+    transition: background-color 0.3s ease; /* Smooth transition for color changes */
+}
+
+
+.header.scrolled{
+    background-color: rgba(187, 225, 250, 0.205); /* Slightly transparent background when scrolled */
+}
+
+.header .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    font-size: 1.8rem; 
+    font-weight: 700; 
+    color: var(--dark-color);
+}
+
+.nav-links ul {
+    display: flex;
+    list-style: none;
+    align-items: center;
+}
+
+.nav-links ul li {
+    margin-left: 30px; 
+    
+}
+
+.nav-links ul li a {
+    color: var(--dark-color);
+    font-weight: 400; /* Lighter weight for better aesthetics */
+    font-size: 1.1rem; /* Larger size for readability */
+    transition: color 0.3s;
+}
+
+.nav-links ul li a:hover {
+    color: var(--primary-color);
+}
+.nav-links ul li .button {
+    color: #211951;
+    background: var(--accent-color);
+    font-size: 16px;
+    font-weight: 600;
+    padding: 12px 22px;
+}
+.nav-links ul li .button:hover {
+    color: var(--light-color);
+    background: var(--dark-color);
+}
+/* Buttons */
+.button {
+    display: inline-block;
+    padding: 12px 24px; 
+    background: var(--secondary-color);
+    color: white;
+    font-weight: 600;
+    border-radius: 28px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    border: none;
+}
+
+.button:hover {
+    background: var(--accent-color); /* Darker shade for hover */
+    transform: scale(1.02);
+}
+
+/* Hero Section */
+.hero {
+    background: linear-gradient(to bottom right, var(--secondary-color), var(--primary-color));
+    padding: 6rem 0; /* Increased padding for larger hero */
+    border-radius: 28px;
+    margin: 3% 2%;
+    color: white;
+    height: 100vh;
+    position: relative;
+}
+
+.hero h1 {
+    font-size: 3.3rem; 
+    margin-bottom: 1.5rem;
+    margin-top: 3.5rem;
+    animation: fadeInDown 1s ease-in-out;
+    line-height: 3.5rem;
+    width: 600px;
+}
+
+.hero p {
+    font-size: 1.1rem; 
+    margin-bottom: 2rem;
+    animation: fadeInUp 1s ease-in-out;
+    width: 500px;
+}
+.hero .button {
+    color: #211951;
+    background: var(--accent-color);
+    font-size: 16px;
+    font-weight: 600;
+    padding: 12px 22px;
+}
+
+.hero .container .spline{
+    z-index: 999;
+    position: absolute;
+    top: -10%;
+    background-color: transparent;
+   height: auto;
+   scale: 1.1;
+
+}
+.hero .container div {
+    background-color: #F0F4F8;
+    width: 600px;
+    height: 250px;
+    position: absolute;
+    right: -1rem; 
+    bottom: -1rem;
+    border-radius: 22px;
+
+
+}
+
+/* Style for the marquee container */
+.marquee {
+    width: 100%;  /* Full width */
+    overflow: hidden;  /* Hide the text overflow */
+    white-space: nowrap;  /* Keep text in a single line */
+    background-color: var(--dark-color); /* Background color */
+    padding: 1rem 0; /* Padding for some spacing */
+    color: #BBE1FA;  /* Text color */
+    font-size: 1.5rem;  /* Larger font size */
+    font-weight: 600; /* Slightly bold */
+    position: relative;
+    margin-top: 6%;
+}
+
+/* Inner div for smooth scrolling */
+.marquee-content {
+    display: inline-block;
+    animation: marquee 30s linear infinite; /* Smooth and infinite animation */
+}
+
+/* Keyframes for the marquee effect */
+@keyframes marquee {
+    0% {
+        transform: translateX(100%); /* Start from the right */
+    }
+    100% {
+        transform: translateX(-100%); /* Move to the left */
+    }
+}
+
+
+
+/* Features Section */
+.features {
+    padding: 5rem 0; /* Increased padding */
+    background-color: #F0F4F8; /* Light grayish-blue background */
+    text-align: center;
+}
+
+.features h2 {
+    font-size: 2.5rem; /* Larger size */
+    color: var(--primary-color);
+    margin-bottom: 2.5rem; /* Increased margin */
+}
+
+.feature-grid {
+    display: flex;
+    justify-content: space-between;
+    gap: 2rem; /* Increased gap for compactness */
+}
+
+.feature-card {
+    background-color: var(--light-color); /* White background for contrast */
+    padding: 4rem; /* More compact padding */
+    border-radius: 10px; /* More rounded corners */
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+    flex: 1; /* Makes the card wider */
+    min-height: 400px; /* Ensures cards are long */
+}
+
+.feature-card:hover {
+    transform: translateY(-10px);
+}
+
+.feature-card h3 {
+    font-size: 1.8rem; /* Larger size */
+    color: var(--dark-color);
+    margin-bottom: 1rem; /* Reduced margin */
+}
+
+.feature-card p {
+    font-size: 1rem; /* Larger font size */
+    color: #666;
+    margin-bottom: 1.5rem;
+}
+
+/* Testimonials Section */
+.testimonials {
+    position: relative; /* Allows the gradient to sit behind the content */
+    padding: 4rem 0; /* Increased padding */
+    background: rgb(33, 25, 81); /* Semi-transparent for glassmorphism */
+    backdrop-filter: blur(10px); /* Frosted glass effect */
+    -webkit-backdrop-filter: blur(10px); /* Safari support */
+    border: 1px solid rgba(255, 255, 255, 0.2); /* Light border for glass definition */
+    border-radius: 28px; /* Rounded corners */
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2); /* Soft shadow for depth */
+    text-align: center;
+    height: 80vh;
+    width: 90%;
+    margin: auto;
+    overflow: hidden;
+}
+
+/* Adding a circular gradient behind the glass testimonials */
+.testimonials::before {
+    content: '';
+    position: absolute;
+    top: 10%;
+    left: 1%;
+    transform: translate(-50%, -50%); /* Center the gradient */
+    width: 400px; /* Adjust size of gradient */
+    height: 400px; /* Adjust size of gradient */
+    background: radial-gradient(circle, rgba(110, 245, 160, 0.301) 0%, rgba(33, 25, 81, 0) 70%); /* Gradient color */
+    z-index: -1; /* Position the gradient behind the testimonials */
+    border-radius: 50%; /* Circular shape */
+}
+
+.testimonials h2 {
+    font-size: 2.5rem; /* Larger size */
+    color: var(--light-color);
+    margin-bottom: 2rem; /* Increased margin */
+}
+.testimonial-grid {
+    display: flex;
+    justify-content: space-between;
+    gap: 2rem; /* Increased gap */
+}
+
+.testimonial {
+    background: rgba(255, 255, 255, 0.15); /* Semi-transparent background for the glass effect */
+    padding: 2rem; /* More compact padding */
+    border-radius: 10px; /* More rounded corners */
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2); /* Soft shadow for depth */
+    backdrop-filter: blur(10px); /* Background blur for glass effect */
+    -webkit-backdrop-filter: blur(10px); /* Safari support */
+    border: 1px solid rgba(255, 255, 255, 0.2); /* Light border for definition */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    flex: 1; /* Makes the testimonial card wider */
+    min-height: 200px; /* Ensures cards are long */
+    z-index: 9999;
+}
+.testimonial:hover {
+    transform: translateY(-10px); /* Slight upward movement on hover */
+    box-shadow: 0 12px 50px rgba(0, 0, 0, 0.3); /* Stronger shadow on hover */
+}
+.testimonial p {
+    font-size: 1rem; /* Larger font size */
+    color: var(--light-color);
+    margin-bottom: 1rem; /* Increased margin */
+}
+
+.testimonial span {
+    font-size: 0.9rem; /* Slightly larger */
+    color: var(--primary-color);
+}
+
+/* Pricing Section */
+.pricing {
+    padding: 5rem 0; /* Increased padding */
+    background-color: #F0F4F8; /* Light grayish-blue background */
+    text-align: center;
+}
+
+.pricing h2 {
+    font-size: 2.5rem; /* Larger size */
+    color: var(--primary-color);
+    margin-bottom: 2.5rem; /* Increased margin */
+}
+
+.pricing-grid {
+    display: flex;
+    justify-content: space-between;
+    gap: 2rem; /* Increased gap */
+    align-items: flex-end; /* Align the cards to the bottom, except the middle one */
+}
+
+.pricing-card {
+    background-color: var(--light-color); /* White background for contrast */
+    padding: 3rem; /* More compact padding */
+    border-radius: 10px; /* More rounded corners */
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+    flex: 1; /* Makes the pricing card wider */
+    min-height: 450px; /* Ensures cards are long */
+    position: relative; /* Required for the inner stroke effect */
+    border: 3px solid rgba(0, 0, 0, 0.1); /* Inside thin stroke */
+    
+}
+
+.pricing-card:hover {
+    transform: translateY(-10px); /* Slight hover effect */
+}
+
+.pricing-card h3 {
+    font-size: 2rem; /* Larger size */
+    color: var(--dark-color);
+    margin-bottom: 1.5rem; /* Increased margin */
+}
+
+.pricing-card p {
+    font-size: 1rem; /* Larger font size */
+    color: var(--dark-color);
+    margin-bottom: 1rem; /* Increased margin */
+    
+}
+
+.pricing-card ul {
+    list-style: none;
+    margin-bottom: 2rem; /* Increased margin */
+}
+
+.pricing-card ul li {
+    color: var(--dark-color);
+    margin-bottom: 0.75rem; /* Increased margin */
+    text-align:left ;
+}
+
+/* Style for the middle card (Pro) */
+.pricing-card:nth-child(2) {
+    background-color: var(--secondary-color); /* Primary background color for the middle card */
+    color: #FFFFFF; /* Text color for contrast */
+    transform: translateY(-20px); /* Slightly raised above the others */
+    min-height: 500px; /* Larger height */
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2); /* Stronger shadow for more prominence */
+}
+
+/* Ensure white text for middle card's content */
+.pricing-card:nth-child(2) h3,
+.pricing-card:nth-child(2) p,
+.pricing-card:nth-child(2) ul li {
+    color: #FFFFFF; /* White text inside the middle card */
+}
+
+/* Button adjustments */
+.pricing-card a.button {
+    display: inline-block;
+    margin-top: 1.5rem;
+    padding: 0.75rem 1.5rem;
+    background-color: var(--accent-color);
+    color: var(--dark-color);
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+    text-decoration: none;
+}
+
+.pricing-card a.button:hover {
+    background-color: var(--dark-color);
+    color: var(--light-color); /* Darken button on hover */
+}
+
+.pricing-card a.primary-btn {
+    background-color: #FFFFFF; /* White button for the middle card */
+    color: var(--dark-color); /* Primary color text for contrast */
+}
+
+/* Security Section */
+.security {
+    padding: 2rem 0; /* Increased padding */
+    background-color: #F0F4F8; /* Light grayish-blue background */
+    text-align: center;
+}
+
+.security h2 {
+    font-size: 2.5rem; /* Larger size */
+    color: var(--primary-color);
+    margin-bottom: 1.5rem; /* Increased margin */
+}
+
+.security-grid {
+    display: flex;
+    margin-top: 2%;
+    justify-content: space-between;
+    gap: 1rem; /* Increased gap */
+}
+
+/* Adjustments for the layout */
+.column-2 {
+    flex: 0 0 48%; /* Adjust width for two cards in one column */
+
+}
+
+.column-1 {
+    flex: 0 0 48%; /* Adjust width for the single card column */
+    display: flex; /* To vertically align the card */
+    justify-content: center; /* Center the card in the column */
+}
+
+.security-card {
+    background-color: var(--light-color); /* White background for contrast */
+    padding: 2rem; /* More compact padding */
+    border-radius: 10px; /* More rounded corners */
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+    flex: 1; /* Makes the security card wider */
+    min-height: 100px; /* Ensures cards are long */
+    margin-top: 10px;
+}
+
+.security-card:hover {
+    transform: translateY(-10px);
+}
+
+.security-card h3 {
+    font-size: 1.8rem; /* Larger size */
+    color: var(--dark-color);
+    margin-bottom: 1rem; /* Reduced margin */
+}
+
+.security-card p {
+    font-size: 0.9rem; /* Larger font size */
+    color: #666;
+}
+
+/* Blog Section */
+.blog {
+    padding: 3rem 0; /* Increased padding */
+    background-color: #F0F4F8; /* Light grayish-blue background */
+    text-align: center;
+}
+
+.blog h2 {
+    font-size: 2.5rem; /* Larger size */
+    color: var(--primary-color); /* Change to your primary color */
+    margin-bottom: 1.5rem; /* Increased margin */
+}
+
+.blog-grid {
+    display: flex;
+    flex-wrap: wrap; /* Allows items to wrap */
+    justify-content: space-between; /* Spacing */
+    gap: 2rem; /* Gap between cards */
+    margin-top: 2%;
+}
+
+.blog-post {
+    background-color: #FFFFFF; /* White background for contrast */
+    padding: 2rem; /* Padding */
+    border-radius: 10px; /* Rounded corners */
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1); /* Shadow */
+    transition: transform 0.3s ease; /* Transition */
+    flex: 1 1 calc(45% - 2rem); /* Responsive */
+    min-height: 300px; /* Minimum height */
+    text-align: center;
+    
+}
+
+.blog-post:hover {
+    transform: translateY(-10px); /* Elevation on hover */
+}
+
+.blog-post h3 {
+    font-size: 1.5rem; /* Heading size */
+    color: var(--dark-color); /* Dark color */
+    margin-bottom: 1rem; /* Bottom margin */
+}
+
+.blog-post p {
+    font-size: 1rem; /* Text size */
+    color: #666; /* Text color */
+    width: 400px;
+    margin: auto;
+    margin-bottom: 30px;
+}
+/* Call to Action Section */
+.cta {
+    padding: 3rem 0; /* Padding around the section */
+    background-color: var(--accent-color); /* Bright blue background for emphasis */
+    color: var(--dark-color); /* White text color */
+    text-align: center; /* Center text */
+    margin-bottom: 3rem;
+    margin-top: 3rem; /* Space above the section */
+}
+
+.cta h2 {
+    font-size: 2.5rem; /* Larger font size for the heading */
+    margin-bottom: 1rem; /* Space below the heading */
+}
+
+.cta p {
+    font-size: 1.2rem; /* Slightly larger font size for the paragraph */
+    margin-bottom: 2rem; /* Space below the paragraph */
+    max-width: 800px; /* Limit the width for readability */
+    margin-left: auto; /* Center align */
+    margin-right: auto; /* Center align */
+}
+
+.cta .button {
+    display: inline-block; /* Block level button */
+    padding: 1rem 2rem; /* Padding inside the button */
+    background-color: #BBE1FA; /* Light color for button background */
+    color: #0F4C75; /* Dark text color */
+    font-size: 1rem; /* Font size for button text */
+    border: none; /* Remove default border */
+    border-radius: 5px; /* Rounded corners */
+    text-decoration: none; /* Remove underline */
+    transition: background-color 0.3s ease; /* Smooth transition for hover effect */
+}
+
+.cta .button:hover {
+    background-color: #1B262C; /* Darker background on hover */
+    color: #BBE1FA; /* Change text color on hover */
+}
+
+
+h2 {
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    text-align: left;
+}
+
+input {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 15px;
+    border: 1px solid #E0E0E0;
+    border-radius: 5px;
+}
+
+button {
+    width: 100%;
+    padding: 10px;
+    background: #0056D2;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+button:hover {
+    background: #29C7AC;
+}
+
+.oauth-buttons {
+    margin-top: 20px;
+}
+
+.github-btn {
+    display: inline-block;
+    padding: 10px 20px;
+    background: #24292E;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background 0.3s ease;
+}
+
+.github-btn:hover {
+    background: #3F4448;
+}
+
+.footer {
+    background-color: #211951; /* Dark background for footer */
+    color: #FFFFFF; /* White text for contrast */
+    padding: 2rem 0; /* Padding for spacing */
+}
+
+.footer-top {
+    display: flex; /* Flexbox for layout */
+    flex-direction: column; /* Column layout */
+    align-items: center; /* Center alignment */
+    max-width: 1200px; /* Maximum width for container */
+    margin: 0 auto; /* Center the footer */
+}
+
+.footer-brand {
+    text-align: center; /* Center brand and description */
+    margin-bottom: 1rem; /* Spacing below brand */
+}
+
+.footer-divider {
+    border: none; /* Remove default border */
+    border-top: 1px solid #BBE1FA; /* Light blue horizontal line */
+    margin: 1rem 0; /* Spacing for the line */
+    width: 100%; /* Full width */
+}
+
+.footer-links, .social-links {
+    text-align: center; /* Center text */
+    margin: 1rem 0; /* Spacing above and below */
+}
+
+.footer-links h3, .social-links h3 {
+    margin-bottom: 0.5rem; /* Spacing below section headers */
+}
+
+.footer-links ul {
+    list-style-type: none; /* Remove bullet points */
+    padding: 0; /* Remove padding */
+}
+
+.footer-links ul li {
+    margin: 0.5rem 0; /* Spacing between links */
+}
+
+.footer-links ul li a, .social-links a {
+    color: #BBE1FA; /* Light blue for links */
+    text-decoration: none; /* Remove underline */
+    transition: color 0.3s; /* Smooth color transition */
+}
+
+.footer-links ul li a:hover, .social-links a:hover {
+    color: #FFB6C1; /* Change color on hover */
+}
+
+.footer-bottom {
+    text-align: center; /* Center footer bottom text */
+    margin-top: 1rem; /* Spacing above bottom text */
+}
+
+
+/* Animations */
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Media Queries */
+@media (max-width: 768px) {
+    .nav-links ul {
+        flex-direction: column;
+        margin-top: 1rem;
+    }
+
+    .feature-grid,
+    .testimonial-grid,
+    .pricing-grid,
+    .security-grid,
+    .blog-grid {
+        flex-direction: column;
+    }
+}
