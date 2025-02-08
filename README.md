@@ -140,7 +140,7 @@ To change the model:
 
 ## System Architecture
 
-![Alt Text](/uploads/Architecture%20Diagram%20of%20CodeForge.jpg)
+![Alt Text](/uploads/Architecture%20Diagram1.jpg)
 
 1. **Client-Side (Frontend)**
    - Code Editor with syntax highlighting
