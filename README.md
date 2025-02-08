@@ -4,7 +4,6 @@
 
 
 
----
 
 ## Overview
 
@@ -12,7 +11,10 @@ CodeForge AI is a cutting-edge offline AI-powered platform that revolutionizes c
 
 This project ensures data privacy, offline accessibility, and AI-powered insights, making it ideal for enterprise, research, and security-focused development environments.
 
----
+## Demo
+
+![Alt Text](/uploads/WEB%20codeforge1.png)
+
 ![Alt Text](/uploads/Demo.jpeg)
 
 ## Key Features
@@ -27,7 +29,7 @@ This project ensures data privacy, offline accessibility, and AI-powered insight
 - FastAPI backend with MongoDB integration
 - Customizable AI models for enhanced code insights
 
----
+
 
 ## Project Structure
 
@@ -48,7 +50,7 @@ DVT PROJECT FINAL/
 - **Frontend**: UI for uploading files, testing code, and interacting with AI insights  
 - **Datasets**: Stores relevant data for model improvement  
 
----
+
 
 ## Tech Stack
 
@@ -59,7 +61,7 @@ DVT PROJECT FINAL/
 - **OCR & File Handling**: PyTesseract, PDFPlumber  
 - **Security**: JWT Authentication, OAuth2  
 
----
+
 
 ## Installation
 
@@ -90,7 +92,7 @@ pip install -r requirements.txt
 uvicorn backend.app.main:app --reload
 ```
 
----
+
 
 ## Database Configuration
 
@@ -102,7 +104,7 @@ CodeForge AI requires a connection to MongoDB. Either set up a local MongoDB ins
    - Define the connection URI in the `.env` file as `MONGO_URI=mongodb://localhost:27017/codeforge_ai`
    - If using MongoDB Atlas, replace `localhost` with your cluster URI.
 
----
+
 
 ## LM Studio and Model Setup
 
@@ -122,7 +124,7 @@ To change the model:
 2. Locate the `/api/chat` route
 3. Modify the model name as needed
 
----
+
 
 ## Usage Guide
 
@@ -131,7 +133,7 @@ To change the model:
 3. View test case generation and static analysis reports
 4. Download suggestions and optimized code
 
----
+
 
 ## System Architecture
 
@@ -150,7 +152,7 @@ To change the model:
    - MongoDB for user & chat history
    - LLaMA 3.2 or Deepseek Coder V2 lite for AI-powered insights
 
----
+
 
 ## Future Enhancements
 
@@ -160,7 +162,7 @@ To change the model:
 - Advanced analytics dashboard
 - Live debugging capabilities
 
----
+
 
 ## Contributing
 
@@ -171,7 +173,7 @@ We welcome contributions. To contribute:
 3. Commit your changes
 4. Submit a pull request
 
----
+
 
 ## License
 
