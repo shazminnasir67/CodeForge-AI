@@ -407,14 +407,14 @@
                 <span>.</span><span>.</span><span>.</span>
             </div>
             <div class="loading-message" id="loading-message">Loading, please wait...</div>
-            <button id="download-report" style="display: none; margin-top: 20px;">Download Report</button>
+            <!-- <button id="download-report" style="display: none; margin-top: 20px;">Download Report</button> -->
         </div>
 
     </div>
 
     
 
-<script>
+<!-- <script>
     document.addEventListener('DOMContentLoaded', async () => {
 
 
@@ -660,6 +660,247 @@
             button.disabled = true;
             button.style.backgroundColor = '#211951';
 
+        }
+    });
+</script>
+</body>
+</html> -->
+<script>
+    document.addEventListener('DOMContentLoaded', async() => {
+        // Element References
+        const themeSwitch = document.getElementById('theme-switch');
+        const body = document.body;
+        const fileUpload = document.getElementById('file-upload');
+        const uploadButton = document.getElementById('upload-button');
+        const loadingDots = document.getElementById('loading-dots');
+        const dropArea = document.getElementById('drop-area');
+        const closeDropAreaButton = document.getElementById('close-drop-area');
+        const codeTextArea = document.getElementById('code');
+        const editor = CodeMirror.fromTextArea(codeTextArea, {
+            mode: 'javascript',
+            lineNumbers: true,
+            theme: 'default',
+            indentUnit: 4,
+            tabSize: 4,
+            indentWithTabs: true
+        });
+
+        const allowedFormats = /\.(java|js|cpp|py|c|cs|go|bash|html|css|csv|scala|ruby|r|sql|asm|jsx|png|jpg|jpeg|pdf|docx|txt)$/i;
+        editor.on('focus', () => {
+            toggleDropArea(false);
+        });
+        editor.on('mousedown', () => {
+            toggleDropArea(false);
+        });
+        // Theme Toggle
+        themeSwitch.addEventListener('change', () => {
+            body.classList.toggle('dark');
+            editor.setOption("theme", body.classList.contains('dark') ? 'darcula' : 'default');
+        });
+
+
+
+        function handleFile(file) {
+            if (!allowedFormats.test(file.name)) {
+                alert('Unsupported file format');
+                return;
+            }
+
+            const reader = new FileReader();
+            if (file.type.startsWith('image/')) {
+                displayImage(file);
+                reader.onload = () => sendToOCR(reader.result);  // Using base64
+                reader.readAsDataURL(file);  // Read as Data URL for images
+            } else if (file.type === 'application/pdf') {
+                // For PDF files
+                reader.onload = async () => {
+                    const formData = new FormData();
+                    formData.append('file', file);
+
+                    const response = await fetch('/api/process-pdf', {
+                        method: 'POST',
+                        body: formData
+                    });
+
+                    const data = await response.json();
+                    editor.setValue(data.result || 'No result from PDF.');
+                    toggleDropArea(false);
+                };
+                reader.readAsArrayBuffer(file);  // Read as ArrayBuffer for PDF
+            }
+            else {
+                reader.onload = () => {
+                    editor.setValue(reader.result);
+                    toggleDropArea(false);
+                };
+                reader.readAsText(file);  // Read as text for non-image files
+            }
+        }
+
+        function sendToOCR(imageData) {
+            // No need to use JSON.stringify since we're already using Data URL
+            fetch('/api/process-image', {
+                method: 'POST',
+                body: JSON.stringify({ image: imageData }),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+                .then(response => response.json())
+                .then(data => {
+                    editor.setValue(data.result || 'No result from model.');
+                    loadingDots.style.display = 'none';
+                    toggleDropArea(false);
+                })
+                .catch(error => {
+                    editor.setValue("An error occurred during OCR processing: " + error.message);
+                    loadingDots.style.display = 'none';
+                });
+        }
+
+
+        function displayImage(file) {
+            const img = document.createElement('img');
+            toggleDropArea(false)
+            img.src = URL.createObjectURL(file);
+            img.style.maxWidth = '50%';
+            dropArea.innerHTML = '';
+            dropArea.appendChild(img);
+            loadingDots.style.display = 'block';
+        }
+
+
+
+
+        function toggleDropArea(show) {
+            dropArea.style.display = show ? 'block' : 'none';
+        }
+
+        // Event Listeners for Drag & Drop
+        dropArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropArea.classList.add('drag-over');
+        });
+
+        dropArea.addEventListener('dragleave', () => dropArea.classList.remove('drag-over'));
+
+        dropArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            const file = e.dataTransfer.files[0];
+            handleFile(file);
+        });
+
+        // File Upload Event Listeners
+        fileUpload.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            handleFile(file);
+        });
+
+        uploadButton.addEventListener('click', () => {
+            const file = fileUpload.files[0];
+            if (file) handleFile(file);
+        });
+
+
+        // API Call for Code Actions
+        async function fetchResult(endpoint) {
+            const code = editor.getValue();
+            disableActionButtons(true);
+            loadingDots.style.display = 'block';
+            document.getElementById('loading-message').style.display = 'block';
+            try {
+                const response = await fetch(endpoint, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ code })
+                });
+
+                const data = await response.json();
+                displayResult(data.message);
+            } catch (error) {
+                displayResult("An error occurred: " + error.message);
+            } finally {
+                // Re-enable action buttons and hide loading indicator
+                disableActionButtons(false);
+                loadingDots.style.display = 'none';
+                document.getElementById('loading-message').style.display = 'none'; // Hide loading message
+            }
+        }
+
+
+        // Format and Display Results
+        function formatNonCodeSections(message) {
+            let formatted = message
+                .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>") // Bold
+                .replace(/^## (.*?)$/gm, "<h2>$1</h2>") // H2
+                .replace(/^### (.*?)$/gm, "<h3>$1</h3>") // H3
+                .replace(/^#### (.*?)$/gm, "<h4>$1</h4>"); // H4
+
+            formatted = formatted.replace(/(^|\n)\* (.*?)(\n|$)/g, "$1<li style='margin-left: 24px;'>$2</li>");
+            formatted = formatted.replace(/(<li>.*<\/li>)+/g, "<ul>$&</ul>");
+            formatted = formatted.replace(/(<p>.*?<\/p>)(<br>)+/g, "$1<br><br>");
+            formatted = formatted.replace(/\n(?!<\/?(ul|ol|li)>)/g, "<br>");
+            return formatted;
+        }
+
+        function displayResult(message) {
+            const codeBlockRegex = /```([\s\S]*?)```/g;
+            let formattedMessage = '';
+            let lastIndex = 0;
+            let match;
+
+            while ((match = codeBlockRegex.exec(message)) !== null) {
+                const textBeforeCode = message.substring(lastIndex, match.index);
+                if (textBeforeCode) {
+                    formattedMessage += formatNonCodeSections(textBeforeCode);
+                }
+
+                const codeContent = match[1].trim();
+                formattedMessage += `<pre><code>${codeContent}</code></pre>`;
+
+                lastIndex = codeBlockRegex.lastIndex;
+            }
+
+            const textAfterCode = message.substring(lastIndex);
+            if (textAfterCode) {
+                formattedMessage += formatNonCodeSections(textAfterCode);
+            }
+
+            document.getElementById("result-container").innerHTML = formattedMessage;
+        }
+
+        // Action Buttons
+        document.querySelectorAll(".action-buttons button").forEach(button => {
+            button.addEventListener("click", () => {
+                console.log(`Button ${button.id} clicked`); // Debugging line
+                activateButton(button);
+                const endpointMap = {
+                    "static-analysis": "/api/static-analysis",
+                    "bug-detection": "/api/bug-detection",
+                    "code-completion": "/api/code-completion",
+                    "test-case-generation": "/api/test-case-generation"
+                };
+                const endpoint = endpointMap[button.id];
+                if (endpoint) {
+                    fetchResult(endpoint);
+                } else {
+                    console.log(`No endpoint found for ${button.id}`); // Debugging line
+                }
+            });
+        });
+        function disableActionButtons(disable) {
+            const buttons = document.querySelectorAll('.action-buttons button');
+            buttons.forEach(button => {
+                button.disabled = disable;
+            });
+        }
+
+
+        function activateButton(button) {
+            button.classList.add('active');
+            button.disabled = true;
+            button.style.backgroundColor = '#211951';
+            
         }
     });
 </script>

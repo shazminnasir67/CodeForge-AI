@@ -15,6 +15,8 @@ This project ensures data privacy, offline accessibility, and AI-powered insight
 
 ![Alt Text](/uploads/WEB%20codeforge1.png)
 
+![Alt Text](/uploads/demo-vid%20-%20Made%20with%20Clipchamp.mp4)
+
 ![Alt Text](/uploads/Demo.jpeg)
 
 ## Key Features
