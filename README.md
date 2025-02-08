@@ -13,6 +13,7 @@ CodeForge AI is a cutting-edge offline AI-powered platform that revolutionizes c
 This project ensures data privacy, offline accessibility, and AI-powered insights, making it ideal for enterprise, research, and security-focused development environments.
 
 ---
+![Alt Text](/uploads/Demo.jpeg)
 
 ## Key Features
 
@@ -134,7 +135,7 @@ To change the model:
 
 ## System Architecture
 
-(image)
+![Alt Text](/uploads/Architecture%20Diagram%20of%20CodeForge.jpg)
 
 1. **Client-Side (Frontend)**
    - Code Editor with syntax highlighting
